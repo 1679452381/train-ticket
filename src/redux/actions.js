@@ -81,6 +81,35 @@ export const setDepartDate = (date) => ({
     payload: date
 })
 
+export const fetchCityData = () => {
+    return (dispatch, getState) => {
+        const { isLoadingCityData } = getState()
+        if (isLoadingCityData) {
+            return
+        }
+        dispatch(setIsLoadingCityData(true))
+
+        const data = JSON.parse(localStorage.getItem('_CITY_DATA_')) || ''
+        if (Date.now() < data.serve_time) {
+            dispatch(setCityData(data.cityData))
+            return
+        }
+        fetch('/rest/cities?_' + Date.now())
+            .then(res => res.json())
+            .then(cityData => {
+                dispatch(setCityData(cityData))
+                localStorage.setItem('_CITY_DATA_', JSON.stringify({
+                    serve_time: Date.now() + 60 * 10000,
+                    cityData,
+                }))
+                dispatch(setIsLoadingCityData(false))
+            })
+            .catch(() => {
+                dispatch(setIsLoadingCityData(false))
+            })
+    }
+}
+
 
 
 

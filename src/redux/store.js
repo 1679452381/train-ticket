@@ -6,18 +6,20 @@ import {
 
 import reducers from './reducers'
 import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension'
+
 
 
 export default createStore(combineReducers(reducers),
     {
         from: "郑州",
         to: '北京',
-        isCitySelectorVisible: false,
         currentSelectorLeftCity: false,
+        isCitySelectorVisible: false,
         cityData: null,
         isLoadingCityData: false,
         isDataSelectorVisible: false,
         departDate: null,
         highSpeed: false,
     },
-    applyMiddleware(thunk))
+    composeWithDevTools(applyMiddleware(thunk)))

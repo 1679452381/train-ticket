@@ -1,8 +1,14 @@
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import { exchangeFromTo, showCitySelector } from "../../redux/actions";
+import {
+  exchangeFromTo,
+  showCitySelector,
+  hideCitySelector,
+  fetchCityData,
+} from "../../redux/actions";
 
 import Header from "../../components/Header";
+import CitySelector from "../../components/CitySelector";
 import Journey from "./Journey";
 
 function Home(props) {
@@ -10,7 +16,17 @@ function Home(props) {
     window.history.back();
   }, []);
 
-  const { from, to, exchangeFromTo, showCitySelector } = props;
+  const {
+    from,
+    to,
+    cityData,
+    isCitySelectorVisible,
+    isLoadingCityData,
+    exchangeFromTo,
+    showCitySelector,
+    hideCitySelector,
+    fetchCityData,
+  } = props;
 
   const doExchangeFromTo = useCallback(() => {
     exchangeFromTo();
@@ -18,7 +34,12 @@ function Home(props) {
   const doShowCitySelector = useCallback((m) => {
     showCitySelector(m);
   }, []);
-
+  const doHideCitySelector = useCallback(() => {
+    hideCitySelector();
+  }, []);
+  const doFetchCityData = useCallback(() => {
+    fetchCityData();
+  }, []);
   return (
     <div>
       <Header title={"首页"} onBack={onBack} />
@@ -30,10 +51,20 @@ function Home(props) {
           showCitySelector={doShowCitySelector}
         />
       </form>
+      <CitySelector
+        show={isCitySelectorVisible}
+        cityData={cityData}
+        isLoadingCityData={isLoadingCityData}
+        onBack={doHideCitySelector}
+        fetchCityData={doFetchCityData}
+      />
     </div>
   );
 }
 
-export default connect((state) => state, { exchangeFromTo, showCitySelector })(
-  Home
-);
+export default connect((state) => state, {
+  exchangeFromTo,
+  showCitySelector,
+  hideCitySelector,
+  fetchCityData,
+})(Home);

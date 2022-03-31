@@ -7,7 +7,7 @@ export default function Header(props) {
   return (
     <Container>
       <span onClick={onBack}>
-        <BackIcon className="icon_active" width={"20px"} height={"20px"} />
+        <BackIcon className="icon_active" width={"1rem"} height={"1rem"} />
       </span>
       <span>{title}</span>
       <p></p>
