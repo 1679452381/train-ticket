@@ -12,12 +12,13 @@ import {
 } from './contant'
 
 
-export default {
+const reducers = {
     from(prestate = '郑州', action) {
         const { type, payload } = action
         switch (type) {
             case ACTION_SET_FROM:
                 return payload
+            default:
         }
         return prestate
     },
@@ -27,6 +28,7 @@ export default {
         switch (type) {
             case ACTION_SET_TO:
                 return payload
+            default:
         }
         return prestate
     },
@@ -36,6 +38,7 @@ export default {
         switch (type) {
             case ACTION_SET_IS_CITY_SELECTOR_VISIBLE:
                 return payload
+            default:
         }
         return prestate
     },
@@ -45,6 +48,7 @@ export default {
         switch (type) {
             case ACTION_SET_CURRENT_SELECTOR_LEFT_CITY:
                 return payload
+            default:
         }
         return prestate
     },
@@ -54,6 +58,7 @@ export default {
         switch (type) {
             case ACTION_SET_CITY_DATA:
                 return payload
+            default:
         }
         return prestate
     },
@@ -63,6 +68,7 @@ export default {
         switch (type) {
             case ACTION_SET_IS_LOADING_CITY_DATA:
                 return payload
+            default:
         }
         return prestate
     },
@@ -72,15 +78,17 @@ export default {
         switch (type) {
             case ACTION_SET_IS_DATA_SELECTORVISIBLE:
                 return payload
+            default:
         }
         return prestate
     },
 
-    highSpeed(prestate = null, action) {
+    highSpeed(prestate = false, action) {
         const { type, payload } = action
         switch (type) {
             case ACTION_SET_HIGH_SPEED:
                 return payload
+            default:
         }
         return prestate
     },
@@ -89,8 +97,11 @@ export default {
         switch (type) {
             case ACTION_SET_DEPART_DATE:
                 return payload
+            default:
         }
         return prestate
     },
 
 }
+
+export default reducers
