@@ -56,6 +56,7 @@ export const setSelectedCity = (city) => {
         } else {
             dispatch(setTo(city))
         }
+        dispatch(hideCitySelector())
     }
 }
 

@@ -5,6 +5,7 @@ import {
   showCitySelector,
   hideCitySelector,
   fetchCityData,
+  setSelectedCity,
 } from "../../redux/actions";
 
 import Header from "../../components/Header";
@@ -26,6 +27,7 @@ function Home(props) {
     showCitySelector,
     hideCitySelector,
     fetchCityData,
+    setSelectedCity,
   } = props;
 
   const doExchangeFromTo = useCallback(() => {
@@ -39,6 +41,10 @@ function Home(props) {
   }, []);
   const doFetchCityData = useCallback(() => {
     fetchCityData();
+  }, []);
+
+  const dosetSelectedCity = useCallback((m) => {
+    setSelectedCity(m);
   }, []);
   return (
     <div>
@@ -57,6 +63,7 @@ function Home(props) {
         isLoadingCityData={isLoadingCityData}
         onBack={doHideCitySelector}
         fetchCityData={doFetchCityData}
+        toSelect={dosetSelectedCity}
       />
     </div>
   );
@@ -67,4 +74,5 @@ export default connect((state) => state, {
   showCitySelector,
   hideCitySelector,
   fetchCityData,
+  setSelectedCity,
 })(Home);
