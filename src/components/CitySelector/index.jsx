@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useEffect, useMemo, useState, memo } from "react";
+import React, { useEffect, useMemo, useState, memo, useCallback } from "react";
 
 import { ReactComponent as BackIcon } from "../../assets/svg/back.svg";
 import { ReactComponent as DelIcon } from "../../assets/svg/delete.svg";
@@ -50,16 +50,13 @@ const CitySections = (props) => {
     toSelect,
   } = props;
   return (
-    <CitySectionsContainer>
+    <div>
       {sections?.map((section) => (
         <CityList key={section.title} section={section} toSelect={toSelect} />
       ))}
-    </CitySectionsContainer>
+    </div>
   );
 };
-const CitySectionsContainer = styled.div`
-  margin-top: 3.5rem;
-`;
 
 const alphabet = Array.from(new Array(26), (ele, index) => {
   return String.fromCharCode(65 + index);
@@ -76,6 +73,67 @@ const AlphabetIdx = memo((props) => {
 const AlphabetIdxConatainer = styled.div`
   height: 1rem;
   padding: 0.1rem 0;
+`;
+
+const SuggestItem = memo((props) => {
+  const { name, toSelect } = props;
+  return <SuggestItemI onClick={() => toSelect(name)}>{name}</SuggestItemI>;
+});
+
+const SuggestItemI = styled.div`
+  list-style: none;
+  height: 2rem;
+  border-bottom: 0.1px solid whitesmoke;
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
+`;
+
+const Suggest = memo((props) => {
+  const [result, setResult] = useState([]);
+
+  const { searchKey, toSelect } = props;
+
+  useEffect(() => {
+    fetch("/rest/search?key=" + encodeURIComponent(searchKey))
+      .then((res) => res.json())
+      .then((data) => {
+        const { result } = data;
+        setResult(result);
+      });
+  }, [searchKey]);
+
+  const fallBackResult = useMemo(() => {
+    if (!result.length) {
+      return [
+        {
+          display: searchKey,
+        },
+      ];
+    }
+
+    return result;
+  }, [result, searchKey]);
+  return (
+    <SuggestContainer>
+      {fallBackResult?.map((item) => (
+        <SuggestItem
+          key={item.display}
+          name={item.display}
+          toSelect={toSelect}
+        />
+      ))}
+    </SuggestContainer>
+  );
+});
+const SuggestContainer = styled.div`
+  background-color: #fff;
+  /* font-size: ; */
+  position: absolute;
+  top: 3.5rem;
+  width: 100%;
+  bottom: 0;
+  z-index: 100;
 `;
 
 export default function CitySelector(props) {
@@ -96,6 +154,12 @@ export default function CitySelector(props) {
   const toAlpha = (alpha) => {
     document.querySelector(`[data-cate='${alpha}']`).scrollIntoView();
   };
+
+  const toSelcetAndClear = useCallback((m) => {
+    toSelect(m);
+    setSearchKey("");
+  }, []);
+
   return (
     <div>
       {show && cityData ? (
@@ -119,11 +183,16 @@ export default function CitySelector(props) {
               </SearchI>
             )}
           </HeaderSearch>
-          <CitySections cityData={cityData} toSelect={toSelect} />
           <ContentContainer>
-            {alphabet.map((alpha) => (
-              <AlphabetIdx key={alpha} onClick={toAlpha} alpha={alpha} />
-            ))}
+            {Boolean(key) && (
+              <Suggest searchKey={key} toSelect={toSelcetAndClear} />
+            )}
+            <CitySections cityData={cityData} toSelect={toSelect} />
+            <AlphabetContainer>
+              {alphabet.map((alpha) => (
+                <AlphabetIdx key={alpha} onClick={toAlpha} alpha={alpha} />
+              ))}
+            </AlphabetContainer>
           </ContentContainer>
         </Container>
       ) : (
@@ -142,6 +211,9 @@ const Container = styled.div`
   z-index: 1000;
 `;
 const ContentContainer = styled.div`
+  margin-top: 3.5rem;
+`;
+const AlphabetContainer = styled.div`
   position: fixed;
   right: 0.1rem;
   top: 4rem;

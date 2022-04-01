@@ -11,6 +11,8 @@ import {
 import Header from "../../components/Header";
 import CitySelector from "../../components/CitySelector";
 import Journey from "./Journey";
+import DepartDate from "./departDate";
+import Submit from "./submit";
 
 function Home(props) {
   const onBack = useCallback(() => {
