@@ -165,7 +165,7 @@ export default function CitySelector(props) {
       {show && cityData ? (
         <Container>
           <HeaderSearch>
-            <BackIcon height={"1rem"} width={"1rem"} onClick={onBack} />
+            <BackIcon height={"1rem"} width={"1rem"} onClick={() => onBack()} />
             <SearchInput
               type="text"
               placeholder="输入车站，城市，首字母"

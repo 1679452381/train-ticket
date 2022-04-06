@@ -1,18 +1,23 @@
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
+import styled from "@emotion/styled";
 import {
   exchangeFromTo,
   showCitySelector,
   hideCitySelector,
   fetchCityData,
   setSelectedCity,
+  hideDateSelector,
+  showDateSelector,
+  setSelectDepartDate,
 } from "../../redux/actions";
 
 import Header from "../../components/Header";
 import CitySelector from "../../components/CitySelector";
+import DateSelector from "../../components/DateSelector";
 import Journey from "./Journey";
-import DepartDate from "./departDate";
-import Submit from "./submit";
+import DepartDate from "./DepartDate";
+import Submit from "./Submit";
 
 function Home(props) {
   const onBack = useCallback(() => {
@@ -30,6 +35,11 @@ function Home(props) {
     hideCitySelector,
     fetchCityData,
     setSelectedCity,
+    isDataSelectorVisible,
+    departDate,
+    showDateSelector,
+    hideDateSelector,
+    setSelectDepartDate,
   } = props;
 
   const doExchangeFromTo = useCallback(() => {
@@ -44,12 +54,23 @@ function Home(props) {
   const doFetchCityData = useCallback(() => {
     fetchCityData();
   }, []);
-
   const dosetSelectedCity = useCallback((m) => {
     setSelectedCity(m);
   }, []);
+
+  const doShowDateSelector = useCallback(() => {
+    showDateSelector();
+  }, []);
+  const doHideDateSelector = useCallback(() => {
+    hideDateSelector();
+  }, []);
+  const doSetSelectDepartDate = useCallback((date) => {
+    setSelectDepartDate(date);
+    hideDateSelector();
+  }, []);
+
   return (
-    <div>
+    <Container>
       <Header title={"首页"} onBack={onBack} />
       <form>
         <Journey
@@ -58,18 +79,30 @@ function Home(props) {
           exchangeFromTo={doExchangeFromTo}
           showCitySelector={doShowCitySelector}
         />
+        <CitySelector
+          show={isCitySelectorVisible}
+          cityData={cityData}
+          isLoadingCityData={isLoadingCityData}
+          onBack={doHideCitySelector}
+          fetchCityData={doFetchCityData}
+          toSelect={dosetSelectedCity}
+        />
+
+        <DepartDate time={departDate} showDateSelector={doShowDateSelector} />
+
+        <DateSelector
+          show={isDataSelectorVisible}
+          onBack={doHideDateSelector}
+          toSelect={doSetSelectDepartDate}
+        />
+        <Submit />
       </form>
-      <CitySelector
-        show={isCitySelectorVisible}
-        cityData={cityData}
-        isLoadingCityData={isLoadingCityData}
-        onBack={doHideCitySelector}
-        fetchCityData={doFetchCityData}
-        toSelect={dosetSelectedCity}
-      />
-    </div>
+    </Container>
   );
 }
+const Container = styled.div`
+  box-sizing: border-box;
+`;
 
 export default connect((state) => state, {
   exchangeFromTo,
@@ -77,4 +110,7 @@ export default connect((state) => state, {
   hideCitySelector,
   fetchCityData,
   setSelectedCity,
+  showDateSelector,
+  hideDateSelector,
+  setSelectDepartDate,
 })(Home);

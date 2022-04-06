@@ -5,7 +5,6 @@ import { ReactComponent as Switch } from "../../assets/svg/switch.svg";
 
 export default function Journey(props) {
   const { from, to, exchangeFromTo, showCitySelector } = props;
-  // console.log("J", showCitySelector);
   return (
     <Container>
       <JourneyStation onClick={() => showCitySelector(true)}>
@@ -20,7 +19,7 @@ export default function Journey(props) {
 }
 
 const Container = styled.div`
-  margin: 0.5rem 0.5rem;
+  padding: 0.5rem 0.5rem;
   display: flex;
   align-items: center;
   justify-content: space-around;

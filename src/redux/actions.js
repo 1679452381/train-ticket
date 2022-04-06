@@ -77,7 +77,7 @@ export const exchangeFromTo = () => {
     }
 }
 
-export const setDepartDate = (date) => ({
+export const setSelectDepartDate = (date) => ({
     type: ACTION_SET_DEPART_DATE,
     payload: date
 })

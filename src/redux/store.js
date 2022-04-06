@@ -19,7 +19,7 @@ export default createStore(combineReducers(reducers),
         cityData: null,
         isLoadingCityData: false,
         isDataSelectorVisible: false,
-        departDate: null,
+        departDate: Date.now(),
         highSpeed: false,
     },
     composeWithDevTools(applyMiddleware(thunk)))
