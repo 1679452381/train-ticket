@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import {
   exchangeFromTo,
@@ -101,7 +102,11 @@ function Home(props) {
         toSelect={doSetSelectDepartDate}
       />
       <HighSpeed highSpeed={highSpeed} toggle={doToggleHighSpeed} />
-      <Submit />
+      <Link
+        to={`order?from=${from}&to=${to}&departDate=${departDate}&highSpeed=${highSpeed}`}
+      >
+        <Submit />
+      </Link>
     </Container>
   );
 }
