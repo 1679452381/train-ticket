@@ -10,6 +10,7 @@ import {
   hideDateSelector,
   showDateSelector,
   setSelectDepartDate,
+  toggleHighSpeed,
 } from "../../redux/actions";
 
 import Header from "../../components/Header";
@@ -17,6 +18,7 @@ import CitySelector from "../../components/CitySelector";
 import DateSelector from "../../components/DateSelector";
 import Journey from "./Journey";
 import DepartDate from "./DepartDate";
+import HighSpeed from "./HighSpeed";
 import Submit from "./Submit";
 
 function Home(props) {
@@ -40,6 +42,8 @@ function Home(props) {
     showDateSelector,
     hideDateSelector,
     setSelectDepartDate,
+    highSpeed,
+    toggleHighSpeed,
   } = props;
 
   const doExchangeFromTo = useCallback(() => {
@@ -69,34 +73,35 @@ function Home(props) {
     hideDateSelector();
   }, []);
 
+  const doToggleHighSpeed = useCallback(() => {
+    toggleHighSpeed();
+  }, []);
+
   return (
     <Container>
       <Header title={"首页"} onBack={onBack} />
-      <form>
-        <Journey
-          from={from}
-          to={to}
-          exchangeFromTo={doExchangeFromTo}
-          showCitySelector={doShowCitySelector}
-        />
-        <CitySelector
-          show={isCitySelectorVisible}
-          cityData={cityData}
-          isLoadingCityData={isLoadingCityData}
-          onBack={doHideCitySelector}
-          fetchCityData={doFetchCityData}
-          toSelect={dosetSelectedCity}
-        />
-
-        <DepartDate time={departDate} showDateSelector={doShowDateSelector} />
-
-        <DateSelector
-          show={isDataSelectorVisible}
-          onBack={doHideDateSelector}
-          toSelect={doSetSelectDepartDate}
-        />
-        <Submit />
-      </form>
+      <Journey
+        from={from}
+        to={to}
+        exchangeFromTo={doExchangeFromTo}
+        showCitySelector={doShowCitySelector}
+      />
+      <CitySelector
+        show={isCitySelectorVisible}
+        cityData={cityData}
+        isLoadingCityData={isLoadingCityData}
+        onBack={doHideCitySelector}
+        fetchCityData={doFetchCityData}
+        toSelect={dosetSelectedCity}
+      />
+      <DepartDate time={departDate} showDateSelector={doShowDateSelector} />
+      <DateSelector
+        show={isDataSelectorVisible}
+        onBack={doHideDateSelector}
+        toSelect={doSetSelectDepartDate}
+      />
+      <HighSpeed highSpeed={highSpeed} toggle={doToggleHighSpeed} />
+      <Submit />
     </Container>
   );
 }
@@ -113,4 +118,5 @@ export default connect((state) => state, {
   showDateSelector,
   hideDateSelector,
   setSelectDepartDate,
+  toggleHighSpeed,
 })(Home);
